@@ -112,7 +112,7 @@ MotorControlConfig default_motor_control_config(void)
     config.speed_to_pwm_gain = 360.0f;     // 用户可调：速度前馈换算为 PWM 偏移的增益
 
     // 用户可调：若发现偏差为正时车反而越偏，把这个改成 false。
-    config.positive_error_turn_right = true;
+    config.positive_error_turn_right = false;
 
     //===================================视觉用户可调：外环循迹 PD。输入视觉 error，输出左右轮目标速度差，通常只调 kp/kd。
     config.turn_pd.kp = 0.035f;          // 转向比例；不够转就加大，来回摆就减小
@@ -122,11 +122,11 @@ MotorControlConfig default_motor_control_config(void)
     config.turn_pd.output_limit = 5.5f;  // 转向速度差限幅，防止单次修正过猛
 
     // 电机用户可调：内环速度 PID。输入目标 rps 和编码器反馈 rps，输出 PWM 修正量。
-    config.left_speed_pid.kp = 0.0f;//220.0f;             // 左轮速度比例
-    config.left_speed_pid.ki = 0.0f;//25.0f;              // 左轮速度积分
-    config.left_speed_pid.kd = 0.0f;//6.0f;               // 左轮速度微分
+    config.left_speed_pid.kp = 4.0f;//220.0f;             // 左轮速度比例
+    config.left_speed_pid.ki = 0.1f;//25.0f;              // 左轮速度积分
+    config.left_speed_pid.kd = 0.1f;//6.0f;               // 左轮速度微分
     config.left_speed_pid.integral_limit = 120.0f; // 左轮速度积分限幅
-    config.left_speed_pid.output_limit = 3000.0f;  // 左轮速度 PID 输出限幅
+    config.left_speed_pid.output_limit = 4000.0f;  // 左轮速度 PID 输出限幅
 
     config.right_speed_pid = config.left_speed_pid; // 右轮默认沿用左轮 PID；两侧差异明显时可单独覆盖
 
