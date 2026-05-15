@@ -77,13 +77,7 @@ void x_test_demo(void)
     // 记录开始时间
     auto start_time = std::chrono::high_resolution_clock::now();
     printf("图传开始... 按下 Ctrl+C 停止\n");
-    // 定义数组存储 80*60 灰度图
-    // DetDiffPdConfig pd_cfg;
-    // DetDiffPdState pd_state;
-    // DetDiffPdOutput pd_out;
 
-    // DetDiffPd_SetDefaultConfig(&pd_cfg);
-    // DetDiffPd_Reset(&pd_state);
     extern uint8 Image_Use[LCDH][LCDW];
     ImageStatus.Threshold_detach = 180;
     ImageStatus.Threshold_static = 100;
@@ -123,9 +117,7 @@ void x_test_demo(void)
         // 把 Mat 数据直接复制到数组
         memcpy(Image_Use, Image_u.data, 80*60);
         ImageProcess(); //图像处理主函数
-        // DetDiffPd_UpdateCenterLinePwm(&pd_cfg, &pd_state, base_pwm, &pd_out);
-        //输出    out.pwm_left out.pwm_right
-
+        
         // 转为三通道彩色图像用于绘制红点
         cv::cvtColor(Image_u, colorImg, cv::COLOR_GRAY2BGR);
 
