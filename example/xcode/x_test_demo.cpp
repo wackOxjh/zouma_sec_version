@@ -37,7 +37,7 @@ void all_void(void);
 static zmg::VisionInfo get_vision_info_from_camera(void)
 {
     zmg::VisionInfo info;
-    info.error = 0.0f;
+    info.error = ImageStatus.Det_True-40;//0.0f;
     info.road_type = zmg::RoadType::STRAIGHT;
     info.line_lost = false;
     info.need_slow = false;

@@ -124,6 +124,7 @@ public:
     void stop(void);
     void safe_shutdown(void);
 
+    // char set_roadtype();
     void set_straight_speed(float speed);       //外部调用：motor.set_straight_speed(6.0f);
     void set_roadtype_speed(float speed, const VisionInfo& vision);
     void set_Motor_PID_dynamic(float p_param, float i_param, float d_param );

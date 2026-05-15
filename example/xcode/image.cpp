@@ -2926,7 +2926,7 @@ else
 
   ImageStatus.Det_True = DetTemp;                                                      //此时的解算出来的平均图像偏差
 //  if()
-  ImageStatus.TowPoint_True = TowPoint;                                                //此时的前瞻
+//   ImageStatus.TowPoint_True = TowPoint;                                                //此时的前瞻
 }
 
 

@@ -475,6 +475,30 @@ void MotorController::apply_motor_stop(ls_atim_pwm* pwm, ls_gpio* enable, int pw
     }
 }
 
+// char MotorController::set_roadtype()
+// {
+//     switch (vision.road_type) {
+//     case RoadType::CURVE:
+//         speed = config_.curve_speed;
+//         break;
+//     case RoadType::CROSS:
+//         speed = config_.cross_speed;
+//         break;
+//     case RoadType::RAMP:
+//         speed = config_.ramp_speed;
+//         break;
+//     case RoadType::FINISH:
+//         speed = 0.0f;
+//         break;
+//     case RoadType::START:
+//     case RoadType::STRAIGHT:
+//     default:
+//         speed = config_.straight_speed;
+//         break;
+//     }
+//     return ;
+// }
+
 /*
 name：设置调试时的直线速度
 param：speed
