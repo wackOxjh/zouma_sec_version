@@ -224,10 +224,8 @@ void x_test_demo(void)
             frame_count = encoder_count = 0;
             start_time = now;
         }
-        // proce;   //立即释放底层图像内存
-        // frame.release();
+        
     }
-    // frame.release();
     // 退出前再次保持 50% duty 和 ENABLE 高，避免底层 PWM cleanup 输出危险的 0% duty。
     motor.safe_shutdown();
 }
