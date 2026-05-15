@@ -5,8 +5,6 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include <algorithm>
-#include <cstring>
 
 /********************************************************************************
  * @file    lq_udp_img_trans_demo.cpp
@@ -77,7 +75,7 @@ void x_test_demo(void)
     }
     printf("摄像头参数: %dx%d @ %dfps\n", cam.get_camera_width(), cam.get_camera_height(), cam.get_camera_fps());
     // 发送帧计数
-    uint32_t frame_count = 0;
+    uint32_t frame_count = 0, encoder_count = 0;
     // 记录开始时间
     auto start_time = std::chrono::high_resolution_clock::now();
     printf("图传开始... 按下 Ctrl+C 停止\n");
@@ -115,31 +113,19 @@ void x_test_demo(void)
         }
 
         // ================test========
-        if (frame.channels() == 1) {
-            gray = frame;
-        } else {
-            cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
-        }
-        cv::resize(gray, Image_u, cv::Size(LCDW, LCDH), 0, 0, cv::INTER_LINEAR);
+        cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
+        cv::resize(gray, Image_u, cv::Size(80, 60), 0, 0, cv::INTER_LINEAR);
           
         // 把 Mat 数据直接复制到数组
-        if (!Image_u.isContinuous() || Image_u.total() != (LCDW * LCDH)) {
-            printf("ERROR: 图像尺寸异常!\n");
-            continue;
-        }
-        std::memcpy(Image_Use, Image_u.data, sizeof(Image_Use));
+        memcpy(Image_Use, Image_u.data, 80*60);
         ImageProcess(); //图像处理主函数
         
         // 转为三通道彩色图像用于绘制红点
         cv::cvtColor(Image_u, colorImg, cv::COLOR_GRAY2BGR);
 
-        const int offline = std::max(0, std::min<int>(ImageStatus.OFFLine, LCDH - 1));
-        for (int i = LCDH - 1; i > offline; i--)
-        {
-            const int center = ImageDeal[i].Center;
-            if (center >= 0 && center < LCDW) {
-                cv::circle(colorImg, cv::Point(center, i), 1, cv::Scalar(0, 0, 255), -1);
-            }
+        for (int i = 59; i > ImageStatus.OFFLine; i--)
+        { 
+            cv::circle(colorImg, cv::Point(ImageDeal[i].Center, i), 1, cv::Scalar(0, 0, 255), -1);
         }
         #if 0
         char recv_str[64];
@@ -170,9 +156,7 @@ void x_test_demo(void)
         }
         else if (loop>=100){
             motor.safe_shutdown();
-            cam.stop_collect();
-            ls_system_running.store(false);
-            break;
+            return;
         }
         loop++;
         motor.set_straight_speed(test_speed);
@@ -195,7 +179,7 @@ void x_test_demo(void)
             dbg.left_duty,
             dbg.right_duty,
             dbg.lost_line_count);
-        lq_log_info("loop:%d", loop);
+        lq_log_info("loop:%7.2f", loop);
         usleep((useconds_t)(config.control_period_s * 1000000.0f));
 
 
@@ -231,14 +215,13 @@ void x_test_demo(void)
         if (elapsed >= 1) {
             float fps = (float)frame_count / (float)elapsed;
             printf("FPS: %.2f\n", fps);
-            frame_count = 0;
+            frame_count = encoder_count = 0;
             start_time = now;
         }
         
     }
     // 退出前再次保持 50% duty 和 ENABLE 高，避免底层 PWM cleanup 输出危险的 0% duty。
     motor.safe_shutdown();
-    cam.stop_collect();
 }
 
 //=============================================================================
