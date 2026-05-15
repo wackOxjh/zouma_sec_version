@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "cwd": "/home/x/Loongson_2K300_301_LIB/Loongson_2k300_301_Library-master(1)/Loongson_2k300_301_Library-master/Loongson_2K300_301_LIB/example/src",
+      "program": "/home/x/Loongson_2K300_301_LIB/Loongson_2k300_301_Library-master(1)/Loongson_2k300_301_Library-master/Loongson_2K300_301_LIB/example/src/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
