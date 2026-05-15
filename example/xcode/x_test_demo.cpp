@@ -34,11 +34,13 @@ void all_void(void);
 
 
 // 实车时建议由视觉线程/进程更新共享变量，电机控制线程只读取最新一帧结果。
-static zmg::VisionInfo get_vision_info_from_camera(void)
+
+static zmg::VisionInfo get_vision_info_from_camera(zmg::MotorController& motor)
 {
+    
     zmg::VisionInfo info;
     info.error = ImageStatus.Det_True-40;//0.0f;
-    info.road_type = zmg::RoadType::STRAIGHT;
+    info.road_type = motor.set_roadtype();
     info.line_lost = false;
     info.need_slow = false;
     info.need_stop = false;
@@ -140,7 +142,7 @@ void x_test_demo(void)
         }
 
         //================================电机驱动
-        const zmg::VisionInfo vision = get_vision_info_from_camera();
+        const zmg::VisionInfo vision = get_vision_info_from_camera(motor);
 
         if (loop>20 && loop%10==0 && loop<45)
         {
@@ -227,3 +229,4 @@ void all_void(void)
 {
     lq_log_warn("666");
 }
+

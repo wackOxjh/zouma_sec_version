@@ -1,7 +1,20 @@
 #include "motor_control.hpp"
+#include "image.hpp"
 
 namespace zmg
 {
+
+const char* RoadType_Str[] = {
+    "Normol",      // 0
+    "Straight",    // 1
+    "Cross",       // 2
+    "Ramp",        // 3
+    "LeftCirque",  // 4
+    "RightCirque", // 5
+    "Forkin",      // 6
+    "Forkout",     // 7
+    "Cross_ture"   // 
+};
 
 static const int MOTOR_DUTY_MIN = 0;
 static const int MOTOR_DUTY_MID = 5000;
@@ -475,29 +488,31 @@ void MotorController::apply_motor_stop(ls_atim_pwm* pwm, ls_gpio* enable, int pw
     }
 }
 
-// char MotorController::set_roadtype()
-// {
-//     switch (vision.road_type) {
-//     case RoadType::CURVE:
-//         speed = config_.curve_speed;
-//         break;
-//     case RoadType::CROSS:
-//         speed = config_.cross_speed;
-//         break;
-//     case RoadType::RAMP:
-//         speed = config_.ramp_speed;
-//         break;
-//     case RoadType::FINISH:
-//         speed = 0.0f;
-//         break;
-//     case RoadType::START:
-//     case RoadType::STRAIGHT:
-//     default:
-//         speed = config_.straight_speed;
-//         break;
-//     }
-//     return ;
-// }
+zmg::RoadType MotorController::set_roadtype()
+{
+    //ImageStatus.Road_type;
+    switch (ImageStatus.Road_type) {
+    case RightCirque:
+    case LeftCirque:
+        return zmg::RoadType::CURVE;
+        break;
+    case Cross:
+        return zmg::RoadType::CROSS;
+        break;
+    case Ramp:
+        return zmg::RoadType::RAMP;
+        break;
+    // case RoadType::FINISH:   这个也需要加上，来应对新规则
+    //     speed = 0.0f;
+    //     break;
+    // case RoadType::START:    在后面加上开始，应对新规则
+    case Straight:
+    default:
+        return zmg::RoadType::STRAIGHT;
+        break;
+    }
+
+}
 
 /*
 name：设置调试时的直线速度
